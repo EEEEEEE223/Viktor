@@ -9,7 +9,8 @@ import android.view.View;
 public class GameView extends View {
     private int viewWidth;
     private int viewHeight;
-    private int points = 30;
+    private int time = 30;
+    private int hp = 10;
 
     public GameView(Context context) {
         super(context);
@@ -26,12 +27,13 @@ public class GameView extends View {
 
         super.onDraw(canvas);
 
-        canvas.drawARGB(250, 127, 199, 255); // заливаем цветом
+        canvas.drawARGB(250, 127, 199, 255);
         Paint p = new Paint();
         p.setAntiAlias(true);
-        p.setTextSize(55.0f);
+        p.setTextSize(56.0f);
         p.setColor(Color.WHITE);
-        canvas.drawText(points+"", viewWidth - 100, 70, p);
+        canvas.drawText(time+"", viewWidth - 100, 70, p);
+        canvas.drawText(hp+"", viewWidth - 100, 60, p);
     }
 
 
