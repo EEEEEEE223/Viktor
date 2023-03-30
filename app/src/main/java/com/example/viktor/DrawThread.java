@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.view.SurfaceHolder;
 
 public class DrawThread extends Thread {
@@ -14,20 +15,20 @@ public class DrawThread extends Thread {
 
     private volatile boolean running = true; // флаг для остановки потока
     private Paint backgroundPaint = new Paint();
-    private Paint pain = new Paint();
     private Bitmap bitmap;
+    private Bitmap b;
     private int towardPointX;
     private int towardPointY;
 
     {
-        pain.setColor(R.drawable.b1);
-        backgroundPaint.setColor(Color.BLUE);
+        backgroundPaint.setColor(Color.WHITE);
         backgroundPaint.setStyle(Paint.Style.FILL);
     }
 
     public DrawThread(Context context, SurfaceHolder surfaceHolder) {
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.smile);
         this.surfaceHolder = surfaceHolder;
+        b = BitmapFactory.decodeResource(context.getResources(), R.drawable.b1);
     }
 
     public void requestStop() {
@@ -48,12 +49,12 @@ public class DrawThread extends Thread {
             if (canvas != null) {
                 try {
                     canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), backgroundPaint);
-                    canvas.drawRect(canvas.getWidth()-100, canvas.getHeight()-200, canvas.getWidth(), canvas.getHeight(), pain);
+                    canvas.drawBitmap(b,0,0,backgroundPaint);
                     canvas.drawBitmap(bitmap, smileX, smileY, backgroundPaint);
                     if (smileX + bitmap.getWidth() / 2 < towardPointX) smileX += 10;
                     if (smileX + bitmap.getWidth() / 2 > towardPointX) smileX -= 10;
                     if (smileY + bitmap.getHeight() / 2 < towardPointY) smileY += 10;
-                    if (smileY + bitmap.getHeight() / 2 > towardPointY) smileY -= 10;
+                    if (b.getHeight()+b.getWidth()==towardPointX) smileY -= 10;
                 } finally {
                     surfaceHolder.unlockCanvasAndPost(canvas);
                 }

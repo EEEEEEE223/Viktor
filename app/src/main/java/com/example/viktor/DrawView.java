@@ -1,9 +1,11 @@
-package com.example.viktor;
+package com.example.viktor_project;
 
 import android.content.Context;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import com.example.viktor_project.DrawThread;
 
 public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 

@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.example.viktor_project.DrawView;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
