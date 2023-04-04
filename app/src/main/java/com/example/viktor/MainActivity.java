@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.example.viktor_project.DrawView;
+import com.example.viktor.DrawView;
 
 public class MainActivity extends AppCompatActivity {
 
