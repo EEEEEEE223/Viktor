@@ -21,14 +21,7 @@ public class MyLevel {
     };
 
     public MyLevel(int level) {
-        this.level = level;
-        if (level<=4){
-            seconds=20;
-        }else if(level>4&&level<=8){
-            seconds=25;
-        }else if (level>8&&level<=14){
-            seconds=30;
-        }else seconds=35;
+        this.level=level;
     }
 
     public int getLevel() {

@@ -20,8 +20,10 @@ public class DrawThread extends Thread {
     private MyButton down;
     private MyButton left;
     private MyButton right;
+    private MyEntity player;
     private int towardPointX;
     private int towardPointY;
+
     {
         backgroundPaint.setColor(Color.WHITE);
         backgroundPaint.setStyle(Paint.Style.FILL);
@@ -44,50 +46,49 @@ public class DrawThread extends Thread {
 
     @Override
     public void run() {
-        int smileX = 0;
-        int smileY = 0;
         while (running) {
             Canvas canvas = surfaceHolder.lockCanvas();
-            up=new MyButton(200,500,but,canvas);
-            down=new MyButton(200,500,but,canvas);
-            right=new MyButton(400,350,but,canvas);
-            left=new MyButton(0,350,but,canvas);
+            up = new MyButton(200, 500, but, canvas);
+            down = new MyButton(200, 500, but, canvas);
+            right = new MyButton(400, 350, but, canvas);
+            left = new MyButton(0, 350, but, canvas);
+            player = new MyEntity(10, 5, 300, 300, bitmap, canvas);
 
             if (canvas != null) {
                 try {
                     canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), backgroundPaint);
                     //canvas.drawBitmap(bitmap, smileX, smileY, backgroundPaint);
-                    Rect msrs=new Rect(0,0,bitmap.getWidth(),bitmap.getHeight());
-                    Rect mdestinatoin=new Rect(smileX,smileY,smileX+200,smileY+200);
-                    Rect src = new Rect( up.getBitmap().getWidth()/2,up.getBitmap().getHeight()/2,up.getBitmap().getWidth(), up.getBitmap().getHeight());
-                    Rect src2 = new Rect( 0,down.getBitmap().getHeight()/2,down.getBitmap().getWidth()/2, down.getBitmap().getHeight());
-                    Rect src3 = new Rect( 0,0,left.getBitmap().getWidth()/2, left.getBitmap().getHeight()/2);
-                    Rect src4 = new Rect( right.getBitmap().getWidth()/2,0,right.getBitmap().getWidth(), right.getBitmap().getHeight()/2);
-                    Rect destination = new Rect(up.getX(), up.getY2(), up.getX()+200,up.getY2()+200);
-                    Rect destination2 = new Rect(down.getX(), canvas.getHeight()-200 ,down.getX()+200,canvas.getHeight());
-                    Rect destination3 = new Rect(left.getX(), left.getY2(), left.getX()+200,left.getY2()+200);
-                    Rect destination4 = new Rect(right.getX(), right.getY2(), right.getX()+200,right.getY2()+200);
-                    canvas.drawBitmap(bitmap,msrs,mdestinatoin,new Paint());
-                    canvas.drawBitmap(up.getBitmap(),src,destination,new Paint());
-                    canvas.drawBitmap(down.getBitmap(),src2,destination2,new Paint());
-                    canvas.drawBitmap(left.getBitmap(),src3,destination3,new Paint());
-                    canvas.drawBitmap(right.getBitmap(),src4,destination4,new Paint());
-                    System.out.println();
-                    if (destination4.contains(towardPointX,towardPointY)) {
-                        if(smileX+200<=canvas.getWidth())
-                            smileX += 10;
+                    Rect msrs = new Rect(0, 0, player.getBitmap().getWidth(), player.getBitmap().getHeight());
+                    Rect mdestinatoin = new Rect(player.getEntytyX(), player.getEntytyY(), player.getEntytyX() + 200, player.getEntytyY() + 200);
+                    Rect src = new Rect(up.getBitmap().getWidth() / 2, up.getBitmap().getHeight() / 2, up.getBitmap().getWidth(), up.getBitmap().getHeight());
+                    Rect src2 = new Rect(0, down.getBitmap().getHeight() / 2, down.getBitmap().getWidth() / 2, down.getBitmap().getHeight());
+                    Rect src3 = new Rect(0, 0, left.getBitmap().getWidth() / 2, left.getBitmap().getHeight() / 2);
+                    Rect src4 = new Rect(right.getBitmap().getWidth() / 2, 0, right.getBitmap().getWidth(), right.getBitmap().getHeight() / 2);
+                    Rect destination = new Rect(up.getX(), up.getY2(), up.getX() + 200, up.getY2() + 200);
+                    Rect destination2 = new Rect(down.getX(), canvas.getHeight() - 200, down.getX() + 200, canvas.getHeight());
+                    Rect destination3 = new Rect(left.getX(), left.getY2(), left.getX() + 200, left.getY2() + 200);
+                    Rect destination4 = new Rect(right.getX(), right.getY2(), right.getX() + 200, right.getY2() + 200);
+                    canvas.drawBitmap(player.getBitmap(), msrs, mdestinatoin, new Paint());
+                    canvas.drawBitmap(up.getBitmap(), src, destination, new Paint());
+                    canvas.drawBitmap(down.getBitmap(), src2, destination2, new Paint());
+                    canvas.drawBitmap(left.getBitmap(), src3, destination3, new Paint());
+                    canvas.drawBitmap(right.getBitmap(), src4, destination4, new Paint());
+                    if (destination4.contains(towardPointX, towardPointY)) {
+                        if (player.getEntytyX() + 200 <= canvas.getWidth())
+                            player.setEntytyX(player.getEntytyX() + 5);
                     }
-                    if (destination3.contains(towardPointX,towardPointY)){
-                        if(smileX<=0) smileX=0;
-                        smileX -= 10;
+                    if (destination3.contains(towardPointX, towardPointY)) {
+                        if (player.getEntytyX() <= 0) player.setEntytyX(0);
+                        player.setEntytyX(player.getEntytyX() - 5);
                     }
-                    if (destination2.contains(towardPointX,towardPointY)){
-                        if (up.getY2()-50>=smileY+200)
-                        smileY += 10;
+                    if (destination2.contains(towardPointX, towardPointY)) {
+                        if (up.getY2() - 50 >= player.getEntytyY() + 200)
+                            player.setEntytyY(player.getEntytyY() + 5);
                     }
-                    if (destination.contains(towardPointX,towardPointY)) {
-                        if(smileY<=0) smileY=0;
-                        smileY -= 10;
+                    if (destination.contains(towardPointX, towardPointY)) {
+                        System.out.println(player.getEntytyY() + 5);
+                        if (player.getEntytyY() <= 0) player.setEntytyY(0);
+                        player.setEntytyY(player.getEntytyY() + 5);
                     }
                 } finally {
                     surfaceHolder.unlockCanvasAndPost(canvas);
