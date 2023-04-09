@@ -56,10 +56,9 @@ public class DrawThread extends Thread {
             if (canvas != null) {
                 try {
                     canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), backgroundPaint);
-                    canvas.save();
-                    canvas.scale(0.5F,0.5F);
-                    canvas.drawBitmap(bitmap, smileX, smileY, backgroundPaint);
-                    canvas.restore();
+                    //canvas.drawBitmap(bitmap, smileX, smileY, backgroundPaint);
+                    Rect msrs=new Rect(0,0,bitmap.getWidth(),bitmap.getHeight());
+                    Rect mdestinatoin=new Rect(smileX,smileY,smileX+200,smileY+200);
                     Rect src = new Rect( up.getBitmap().getWidth()/2,up.getBitmap().getHeight()/2,up.getBitmap().getWidth(), up.getBitmap().getHeight());
                     Rect src2 = new Rect( 0,down.getBitmap().getHeight()/2,down.getBitmap().getWidth()/2, down.getBitmap().getHeight());
                     Rect src3 = new Rect( 0,0,left.getBitmap().getWidth()/2, left.getBitmap().getHeight()/2);
@@ -68,20 +67,22 @@ public class DrawThread extends Thread {
                     Rect destination2 = new Rect(down.getX(), canvas.getHeight()-200 ,down.getX()+200,canvas.getHeight());
                     Rect destination3 = new Rect(left.getX(), left.getY2(), left.getX()+200,left.getY2()+200);
                     Rect destination4 = new Rect(right.getX(), right.getY2(), right.getX()+200,right.getY2()+200);
+                    canvas.drawBitmap(bitmap,msrs,mdestinatoin,new Paint());
                     canvas.drawBitmap(up.getBitmap(),src,destination,new Paint());
                     canvas.drawBitmap(down.getBitmap(),src2,destination2,new Paint());
                     canvas.drawBitmap(left.getBitmap(),src3,destination3,new Paint());
                     canvas.drawBitmap(right.getBitmap(),src4,destination4,new Paint());
+                    System.out.println();
                     if (destination4.contains(towardPointX,towardPointY)) {
-                        if(canvas.getWidth()-smileX<=smileX)smileX=canvas.getWidth()-canvas.getWidth();
-                        smileX += 10;
+                        if(smileX+200<=canvas.getWidth())
+                            smileX += 10;
                     }
                     if (destination3.contains(towardPointX,towardPointY)){
                         if(smileX<=0) smileX=0;
                         smileX -= 10;
                     }
                     if (destination2.contains(towardPointX,towardPointY)){
-                        if (smileY+bitmap.getHeight()+25>=up.getY2())smileY=up.getY2()-bitmap.getHeight()-25;
+                        if (up.getY2()-50>=smileY+200)
                         smileY += 10;
                     }
                     if (destination.contains(towardPointX,towardPointY)) {
