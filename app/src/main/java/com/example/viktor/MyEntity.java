@@ -13,14 +13,15 @@ public class MyEntity {
     int entytyX=0;
     int entytyY=0;
 
-    public MyEntity(int hp, int damage, int radX, int radY, Bitmap bitmap, Canvas canvas) {
+    public MyEntity(int hp, int damage, Bitmap bitmap, Canvas canvas, int entytyX, int entytyY) {
         this.hp = hp;
         this.damage = damage;
-        this.radX = radX;
-        this.radY = radY;
         this.bitmap = bitmap;
         this.canvas = canvas;
+        this.entytyX = entytyX;
+        this.entytyY = entytyY;
     }
+
     public int getHp() {
         return hp;
     }
