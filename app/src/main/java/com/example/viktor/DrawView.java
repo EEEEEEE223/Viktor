@@ -44,7 +44,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        int action = event.getActionMasked();
+        int action = event.getAction();
         if(action == MotionEvent.ACTION_DOWN) {
 
             upCountDownTimer = new CountDownTimer(Long.MAX_VALUE, 15) {
