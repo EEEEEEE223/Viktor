@@ -24,6 +24,7 @@ public class DrawThread extends Thread {
     private MyEntity enemy;
     private int towardPointX;
     private int towardPointY;
+    private boolean start =false;
 
     {
         backgroundPaint.setColor(Color.WHITE);
@@ -42,6 +43,7 @@ public class DrawThread extends Thread {
     }
 
     public void setTowardPoint(int x, int y) {
+        start =true;
         towardPointX = x;
         towardPointY = y;
     }
@@ -50,14 +52,18 @@ public class DrawThread extends Thread {
     public void run() {
         int smileX = 0;
         int smileY = 0;
+        up=new MyButton(200,500,but);
+        down=new MyButton(200,500,but);
+        right=new MyButton(400,350,but);
+        left=new MyButton(0,350,but);
+        enemy=new MyEntity(10,3,angsmile,0,0);
         while (running) {
             Canvas canvas = surfaceHolder.lockCanvas();
-            up=new MyButton(200,500,but,canvas);
-            down=new MyButton(200,500,but,canvas);
-            right=new MyButton(400,350,but,canvas);
-            left=new MyButton(0,350,but,canvas);
-            enemy=new MyEntity(10,3,bitmap,canvas,0,0);
-
+            up.setCanvas(canvas);
+            down.setCanvas(canvas);
+            right.setCanvas(canvas);
+            left.setCanvas(canvas);
+            enemy.setCanvas(canvas);
             if (canvas != null) {
                 try {
                     canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), backgroundPaint);
@@ -80,25 +86,27 @@ public class DrawThread extends Thread {
                     canvas.drawBitmap(left.getBitmap(),src3,destination3,new Paint());
                     canvas.drawBitmap(right.getBitmap(),src4,destination4,new Paint());
                     canvas.drawBitmap(enemy.getBitmap(),src5,destination5,new Paint());
-                    System.out.println();
-                    if (destination4.contains(towardPointX,towardPointY)) {
-                        if(smileX+200<=canvas.getWidth())
-                            smileX += 10;
+                    if(start){
+                        if (destination4.contains(towardPointX, towardPointY)) {
+                            if (smileX + 200 <= canvas.getWidth())
+                                smileX += 10;
+                        } else if (destination3.contains(towardPointX, towardPointY)) {
+                            if (smileX <= 0) smileX = 0;
+                            smileX -= 10;
+                        } else if (destination2.contains(towardPointX, towardPointY)) {
+                            if (up.getY2() - 50 >= smileY + 200)
+                                smileY += 10;
+                        } else if (destination.contains(towardPointX, towardPointY)) {
+                            if (smileY <= 0) smileY = 0;
+                            smileY -=10;
+                        }
+                        start=false;
                     }
-                    if (destination3.contains(towardPointX,towardPointY)){
-                        if(smileX<=0) smileX=0;
-                        smileX -= 10;
-                    }
-                    if (destination2.contains(towardPointX,towardPointY)){
-                        if (up.getY2()-50>=smileY+200)
-                            smileY += 10;
-                    }
-                    if (destination.contains(towardPointX,towardPointY)) {
-                        if(smileY<=0) smileY=0;
-                        smileY -= 10;
-                    }
+
+
                     if (enemy.getEntytyX()<smileX){
                         enemy.setEntytyX(enemy.getEntytyX()+10);
+                        System.out.println(enemy.getEntytyX()<smileX);
                     }
                 } finally {
                     surfaceHolder.unlockCanvasAndPost(canvas);

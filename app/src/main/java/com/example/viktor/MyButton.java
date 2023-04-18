@@ -8,13 +8,18 @@ public class MyButton {
     private int y;
     private Bitmap bitmap;
     private Canvas canvas;
-    public MyButton(int x, int y, Bitmap bitmap,Canvas canvas){
+    public MyButton(int x, int y, Bitmap bitmap){
         this.x = x;
         this.y = y;
         this.bitmap = bitmap;
-        this.canvas=canvas;
+    }
+    public Canvas getCanvas() {
+        return canvas;
     }
 
+    public void setCanvas(Canvas canvas) {
+        this.canvas = canvas;
+    }
     public int getX() {
         return x; //canvas.getWidth()-x;
     }
