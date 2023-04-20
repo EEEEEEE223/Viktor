@@ -1,15 +1,12 @@
 package com.example.viktor;
 
 import android.content.Context;
-import android.os.CountDownTimer;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.example.viktor.DrawThread;
-
 public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
-    CountDownTimer upCountDownTimer;
+
     private DrawThread drawThread;
 
     public DrawView(Context context) {
@@ -44,21 +41,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        int action = event.getAction();
-        if(action == MotionEvent.ACTION_DOWN) {
-
-            upCountDownTimer = new CountDownTimer(Long.MAX_VALUE, 15) {
-                public void onTick(long millisUntilFinished) {
-                    if (true) {
-                        drawThread.setTowardPoint((int) event.getX(), (int) event.getY());
-                    }
-                }
-
-                public void onFinish() {
-                }
-            };
-            upCountDownTimer.start();
-        }else if(action == MotionEvent.ACTION_UP) upCountDownTimer.cancel();
+        drawThread.setTowardPoint((int) event.getX(), (int) event.getY());
         return false;
     }
 }

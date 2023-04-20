@@ -86,10 +86,10 @@ public class DrawThread extends Thread {
                     canvas.drawBitmap(left.getBitmap(),src3,destination3,new Paint());
                     canvas.drawBitmap(right.getBitmap(),src4,destination4,new Paint());
                     canvas.drawBitmap(enemy.getBitmap(),src5,destination5,new Paint());
-                    if(start){
                         if (destination4.contains(towardPointX, towardPointY)) {
                             if (smileX + 200 <= canvas.getWidth())
                                 smileX += 10;
+                            System.out.println(2);
                         } else if (destination3.contains(towardPointX, towardPointY)) {
                             if (smileX <= 0) smileX = 0;
                             smileX -= 10;
@@ -100,14 +100,26 @@ public class DrawThread extends Thread {
                             if (smileY <= 0) smileY = 0;
                             smileY -=10;
                         }
-                        start=false;
-                    }
-
-
-                    if (enemy.getEntytyX()<smileX){
-                        enemy.setEntytyX(enemy.getEntytyX()+10);
-                        System.out.println(enemy.getEntytyX()<smileX);
-                    }
+                    while (!mdestinatoin.contains(destination5)) {
+                        if (enemy.getEntytyX() < smileX) {
+                            enemy.setEntytyX(enemy.getEntytyX() + 4);
+                        } else if (enemy.getEntytyX() > smileX) {
+                            enemy.setEntytyX(enemy.getEntytyX() - 4);
+                        } else if (enemy.getEntytyY() < smileY) {
+                            enemy.setEntytyY(enemy.getEntytyY() + 6);
+                        } else if (enemy.getEntytyY() > smileY) {
+                            enemy.setEntytyY(enemy.getEntytyY() - 6);
+                        } else if (enemy.getEntytyX() < smileX && enemy.getEntytyY() < smileY) {
+                            enemy.setEntytyX(enemy.getEntytyX() + 4);
+                            enemy.setEntytyY(enemy.getEntytyY() + 6);
+                        } else if (enemy.getEntytyX() > smileX && enemy.getEntytyY() > smileY) {
+                            enemy.setEntytyX(enemy.getEntytyX() - 4);
+                            enemy.setEntytyY(enemy.getEntytyY() - 6);
+                        } else {
+                            enemy.setEntytyX(enemy.getEntytyX());
+                            enemy.setEntytyY(enemy.getEntytyY());
+                        }
+                   }
                 } finally {
                     surfaceHolder.unlockCanvasAndPost(canvas);
                 }

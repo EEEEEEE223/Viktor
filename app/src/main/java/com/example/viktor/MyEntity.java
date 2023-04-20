@@ -82,6 +82,6 @@ public class MyEntity {
     }
 
     public void setEntytyY(int entytyY) {
-        this.entytyY = entytyY;
+        this.entytyY = this.entytyX+entytyY;
     }
 }
