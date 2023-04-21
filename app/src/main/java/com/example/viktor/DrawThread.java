@@ -14,6 +14,7 @@ public class DrawThread extends Thread {
     private SurfaceHolder surfaceHolder;
     private volatile boolean running = true;
     private Paint backgroundPaint = new Paint();
+    private Paint endpaint=new Paint();
     private Bitmap bitmap;
     private Bitmap angsmile;
     private Bitmap but;
@@ -29,6 +30,8 @@ public class DrawThread extends Thread {
     {
         backgroundPaint.setColor(Color.WHITE);
         backgroundPaint.setStyle(Paint.Style.FILL);
+        endpaint.setColor(Color.RED);
+        endpaint.setTextSize((float) 100);
     }
 
     public DrawThread(Context context, SurfaceHolder surfaceHolder) {
@@ -56,7 +59,7 @@ public class DrawThread extends Thread {
         down = new MyButton(200, 500, but);
         right = new MyButton(400, 350, but);
         left = new MyButton(0, 350, but);
-        enemy = new MyEntity(10, 3, angsmile, 0, 0);
+        enemy = new MyEntity(10, 3, angsmile, -500, -500);
         while (running) {
             Canvas canvas = surfaceHolder.lockCanvas();
             up.setCanvas(canvas);
@@ -69,7 +72,7 @@ public class DrawThread extends Thread {
                     canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), backgroundPaint);
                     //canvas.drawBitmap(bitmap, smileX, smileY, backgroundPaint);
                     Rect msrs = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-                    Rect mdestinatoin = new Rect(smileX, smileY, smileX + 200, smileY + 200);
+                    Rect mdestinatoin = new Rect(smileX, smileY, smileX + 150, smileY + 150);
                     Rect src = new Rect(up.getBitmap().getWidth() / 2, up.getBitmap().getHeight() / 2, up.getBitmap().getWidth(), up.getBitmap().getHeight());
                     Rect src2 = new Rect(0, down.getBitmap().getHeight() / 2, down.getBitmap().getWidth() / 2, down.getBitmap().getHeight());
                     Rect src3 = new Rect(0, 0, left.getBitmap().getWidth() / 2, left.getBitmap().getHeight() / 2);
@@ -79,13 +82,13 @@ public class DrawThread extends Thread {
                     Rect destination2 = new Rect(down.getX(), canvas.getHeight() - 200, down.getX() + 200, canvas.getHeight());
                     Rect destination3 = new Rect(left.getX(), left.getY2(), left.getX() + 200, left.getY2() + 200);
                     Rect destination4 = new Rect(right.getX(), right.getY2(), right.getX() + 200, right.getY2() + 200);
-                    Rect destination5 = new Rect(enemy.getEntytyX(), enemy.getEntytyY(), enemy.getEntytyX() + 150, enemy.getEntytyY() + 150);
-                    canvas.drawBitmap(bitmap, msrs, mdestinatoin, new Paint());
+                    Rect destination5 = new Rect(enemy.getEntytyX(), enemy.getEntytyY(), enemy.getEntytyX() + 80, enemy.getEntytyY() + 80);
                     canvas.drawBitmap(up.getBitmap(), src, destination, new Paint());
                     canvas.drawBitmap(down.getBitmap(), src2, destination2, new Paint());
                     canvas.drawBitmap(left.getBitmap(), src3, destination3, new Paint());
                     canvas.drawBitmap(right.getBitmap(), src4, destination4, new Paint());
                     canvas.drawBitmap(enemy.getBitmap(), src5, destination5, new Paint());
+                    canvas.drawBitmap(bitmap, msrs, mdestinatoin, new Paint());
                     if (destination4.contains(towardPointX, towardPointY)) {
                         if (smileX + 200 <= canvas.getWidth())
                             smileX += 10;
@@ -102,16 +105,20 @@ public class DrawThread extends Thread {
                     }
                     if (!mdestinatoin.contains(destination5)) {
                         if (enemy.getEntytyX() < smileX) {
-                            enemy.setEntytyX(enemy.getEntytyX() + 4);
+                            enemy.setEntytyX(enemy.getEntytyX() + 2);
                         }
                         if (enemy.getEntytyX() > smileX) {
-                            enemy.setEntytyX(enemy.getEntytyX() - 4);
+                            enemy.setEntytyX(enemy.getEntytyX() - 2);
                         }
                         if (enemy.getEntytyY() < smileY) {
-                            enemy.setEntytyY(enemy.getEntytyY() + 6);
+                            enemy.setEntytyY(enemy.getEntytyY() + 3);
                         }
                         if (enemy.getEntytyY() > smileY) {
-                            enemy.setEntytyY(enemy.getEntytyY() - 6);
+                            enemy.setEntytyY(enemy.getEntytyY() - 3);
+                        }
+                        if (destination5.intersect(mdestinatoin)){
+                            System.out.println(2);
+                            dead(canvas);
                         }
                     }
                 } finally {
@@ -120,5 +127,10 @@ public class DrawThread extends Thread {
 
             }
         }
+    }
+
+    public void dead(Canvas canvas){
+        running=false;
+        canvas.drawText("YOU DIE",(float) canvas.getWidth()/2-150,(float) canvas.getHeight()/2,endpaint);
     }
 }
