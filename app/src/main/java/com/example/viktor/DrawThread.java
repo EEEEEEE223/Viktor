@@ -13,15 +13,18 @@ public class DrawThread extends Thread {
 
     private SurfaceHolder surfaceHolder;
     private volatile boolean running = true;
+    private volatile boolean running2 = true;
     private Paint backgroundPaint = new Paint();
     private Paint endpaint=new Paint();
     private Bitmap bitmap;
     private Bitmap angsmile;
     private Bitmap but;
+    private Bitmap reset;
     private MyButton up;
     private MyButton down;
     private MyButton left;
     private MyButton right;
+    private MyButton restart;
     private MyEntity enemy;
     private int towardPointX;
     private int towardPointY;
@@ -39,6 +42,7 @@ public class DrawThread extends Thread {
         this.surfaceHolder = surfaceHolder;
         but = BitmapFactory.decodeResource(context.getResources(), R.drawable.but);
         angsmile = BitmapFactory.decodeResource(context.getResources(), R.drawable.angsmile);
+        reset=BitmapFactory.decodeResource(context.getResources(), R.drawable.restart);
     }
 
     public void requestStop() {
@@ -117,7 +121,7 @@ public class DrawThread extends Thread {
                             enemy.setEntytyY(enemy.getEntytyY() - 3);
                         }
                         if (destination5.intersect(mdestinatoin)){
-                            System.out.println(2);
+                            running=false;
                             dead(canvas);
                         }
                     }
@@ -131,6 +135,24 @@ public class DrawThread extends Thread {
 
     public void dead(Canvas canvas){
         running=false;
-        canvas.drawText("YOU DIE",(float) canvas.getWidth()/2-150,(float) canvas.getHeight()/2,endpaint);
+        restart = new MyButton(canvas.getWidth() / 2, canvas.getHeight() / 2 + 200, reset);
+        restart.setCanvas(canvas);
+        while (running2) {
+            try {
+
+                canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), new Paint());
+                Rect rsrc = new Rect(0, 0, restart.getBitmap().getWidth(), restart.getBitmap().getHeight());
+                Rect rdestaintion = new Rect(restart.getX(), restart.getY(), restart.getX() + 200, restart.getY() + 200);
+                canvas.drawBitmap(restart.getBitmap(), rsrc, rdestaintion, new Paint());
+                canvas.drawText("YOU DIE", (float) canvas.getWidth() / 2 - 150, (float) canvas.getHeight() / 2, endpaint);
+                System.out.println(towardPointX);
+                System.out.println(towardPointY);
+                if (rdestaintion.contains(towardPointX, towardPointY)) {
+                    run();
+                }
+            } finally {
+                surfaceHolder.unlockCanvasAndPost(canvas);
+            }
+        }
     }
 }
