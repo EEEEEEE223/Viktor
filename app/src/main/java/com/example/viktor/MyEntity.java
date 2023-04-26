@@ -12,6 +12,8 @@ public class MyEntity {
     private Canvas canvas;
     int entytyX=0;
     int entytyY=0;
+    int firstentytyX=entytyX;
+    int firstentytyY=entytyY;
 
     public MyEntity(int hp, int damage, Bitmap bitmap, int entytyX, int entytyY) {
         this.hp = hp;
@@ -83,5 +85,21 @@ public class MyEntity {
 
     public void setEntytyY(int entytyY) {
         this.entytyY = entytyY;
+    }
+
+    public int getFirstentytyX() {
+        return firstentytyX;
+    }
+
+    public void setFirstentytyX(int firstentytyX) {
+        this.firstentytyX = firstentytyX;
+    }
+
+    public int getFirstentytyY() {
+        return firstentytyY;
+    }
+
+    public void setFirstentytyY(int firstentytyY) {
+        this.firstentytyY = firstentytyY;
     }
 }
