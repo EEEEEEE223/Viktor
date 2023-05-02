@@ -86,13 +86,15 @@ public class DrawThread extends Thread {
                     Rect src5 = new Rect(0, 0, enemy.getBitmap().getWidth(), enemy.getBitmap().getHeight());
                     Rect srcreset=new Rect(0,0,reset.getWidth(),reset.getHeight());
                     Rect destination = new Rect(up.getX(), up.getY2(), up.getX() + 200, up.getY2() + 200);
-                    Rect destination2 = new Rect(down.getX(), canvas.getHeight() - 200, down.getX() + 200, canvas.getHeight());
+                    int h = canvas.getHeight();
+                    int w = canvas.getWidth();
+                    Rect destination2 = new Rect(down.getX(), h - 200, down.getX() + 200, h);
                     Rect destination3 = new Rect(left.getX(), left.getY2(), left.getX() + 200, left.getY2() + 200);
                     Rect destination4 = new Rect(right.getX(), right.getY2(), right.getX() + 200, right.getY2() + 200);
                     Rect destination5 = new Rect(enemy.getEntytyX(), enemy.getEntytyY(), enemy.getEntytyX() + 80, enemy.getEntytyY() + 80);
-                    Rect destinationres=new Rect(canvas.getHeight()/2-100,canvas.getWidth()/2-300,canvas.getHeight()/2+100,canvas.getWidth()/2-100);
+                    Rect destinationres=new Rect(w /2-100, h /2-300, w /2+100, h /2-100);
                     if(start) {
-                        canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), backgroundPaint);
+                        canvas.drawRect(0, 0, w, h, backgroundPaint);
                         canvas.drawBitmap(up.getBitmap(), src, destination, new Paint());
                         canvas.drawBitmap(down.getBitmap(), src2, destination2, new Paint());
                         canvas.drawBitmap(left.getBitmap(), src3, destination3, new Paint());
@@ -103,11 +105,11 @@ public class DrawThread extends Thread {
                     }
                     if(die){
                         canvas.drawBitmap(reset,srcreset,destinationres,new Paint());
-                        canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), new Paint());
-                        canvas.drawText("YOU DIE", (float) canvas.getWidth() / 2 - 150, (float) canvas.getHeight() / 2, endpaint);
+                        canvas.drawRect(0, 0, w, h, new Paint());
+                        canvas.drawText("YOU DIE", (float) w / 2 - 150, (float) h / 2, endpaint);
                     }
                     if (destination4.contains(towardPointX, towardPointY)) {
-                        if (smileX + 200 <= canvas.getWidth())
+                        if (smileX + 200 <= w)
                             smileX += 10;
                     } else if (destination3.contains(towardPointX, towardPointY)) {
                         if (smileX <= 0) smileX = 0;
