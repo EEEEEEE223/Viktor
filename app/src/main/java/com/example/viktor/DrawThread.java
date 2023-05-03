@@ -28,6 +28,7 @@ public class DrawThread extends Thread {
     private MyEntity enemy;
     private int towardPointX;
     private int towardPointY;
+    private MyLevel myLevel;
     private boolean start =true;
     private boolean die =false;
     {
@@ -56,6 +57,9 @@ public class DrawThread extends Thread {
         towardPointX = x;
         towardPointY = y;
     }
+    public int generate(int min , int max){
+        return (int)Math.floor(Math.random() * (max - min - 1 ) + min);
+    }
 
     @Override
     public void run() {
@@ -66,7 +70,8 @@ public class DrawThread extends Thread {
         down = new MyButton(200, 500, but);
         right = new MyButton(400, 350, but);
         left = new MyButton(0, 350, but);
-        enemy = new MyEntity(100, 3, angsmile, -500, -500);
+        enemy = new MyEntity(100, 3, angsmile, 0,0);//randomNumber.generate(-100,1000) , randomNumber.generate(-500,-2500));
+        myLevel=new MyLevel(1);
         while (running) {
             Canvas canvas = surfaceHolder.lockCanvas();
             up.setCanvas(canvas);
@@ -74,6 +79,10 @@ public class DrawThread extends Thread {
             right.setCanvas(canvas);
             left.setCanvas(canvas);
             enemy.setCanvas(canvas);
+            int h = canvas.getHeight();
+            int w = canvas.getWidth();
+            System.out.println(generate(-100,1000));
+            System.out.println(generate(-500,-2500));
             if (canvas != null) {
                 try {
                     Rect msrs = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
@@ -86,20 +95,31 @@ public class DrawThread extends Thread {
                     Rect src5 = new Rect(0, 0, enemy.getBitmap().getWidth(), enemy.getBitmap().getHeight());
                     Rect srcreset=new Rect(0,0,reset.getWidth(),reset.getHeight());
                     Rect destination = new Rect(up.getX(), up.getY2(), up.getX() + 200, up.getY2() + 200);
-                    int h = canvas.getHeight();
-                    int w = canvas.getWidth();
                     Rect destination2 = new Rect(down.getX(), h - 200, down.getX() + 200, h);
                     Rect destination3 = new Rect(left.getX(), left.getY2(), left.getX() + 200, left.getY2() + 200);
                     Rect destination4 = new Rect(right.getX(), right.getY2(), right.getX() + 200, right.getY2() + 200);
                     Rect destination5 = new Rect(enemy.getEntytyX(), enemy.getEntytyY(), enemy.getEntytyX() + 80, enemy.getEntytyY() + 80);
                     Rect destinationres=new Rect(w /2-100, h /2-300, w /2+100, h /2-100);
+                    if(myLevel.getLevel()<=4){
+                        myLevel.setEnemy(4);
+                    }else if(myLevel.getLevel()>=5&&myLevel.getLevel()<=8){
+                        myLevel.setEnemy(10);
+                        myLevel.setLongrangeenemy(3);
+                    }else if(myLevel.getLevel()>=9&&myLevel.getLevel()<=12){
+                        myLevel.setEnemy(0);
+                        myLevel.setLongrangeenemy(7);
+                        myLevel.setStrongenemy(10);
+                    }
                     if(start) {
+                        if(myLevel.getEnemy()>=0){
+                            canvas.drawBitmap(enemy.getBitmap(), src5, destination5, new Paint());
+                            myLevel.setEnemy(myLevel.getEnemy()-1);
+                        }
                         canvas.drawRect(0, 0, w, h, backgroundPaint);
                         canvas.drawBitmap(up.getBitmap(), src, destination, new Paint());
                         canvas.drawBitmap(down.getBitmap(), src2, destination2, new Paint());
                         canvas.drawBitmap(left.getBitmap(), src3, destination3, new Paint());
                         canvas.drawBitmap(right.getBitmap(), src4, destination4, new Paint());
-                        canvas.drawBitmap(enemy.getBitmap(), src5, destination5, new Paint());
                         canvas.drawBitmap(bitmap, msrs, mdestinatoin, new Paint());
                         canvas.drawText("XP-" + smileXP, up.getX2() - 200, up.getY2() + 200, dest);
                     }
@@ -142,8 +162,14 @@ public class DrawThread extends Thread {
                             die=true;
                         }
                         if(destinationres.contains(towardPointX,towardPointY)){
-                            start=true;
                             die=false;
+                            smileX=0;
+                            smileY=0;
+                            smileXP=12;
+                            enemy.setEntytyY(enemy.getFirstentytyY());
+                            enemy.setEntytyX(enemy.getFirstentytyX());
+                            enemy.setHp(enemy.getFirstHp());
+                            start=true;
                         }
                         if (distdestinatoin.contains(destination5)) {
                             enemy.setHp(enemy.getHp() - 1);

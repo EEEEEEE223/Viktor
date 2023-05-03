@@ -20,28 +20,6 @@ public class MyLevel {
 
     public MyLevel(int level) {
         this.level=level;
-        if(level>0&&level<=4){
-            enemy=15;
-        }else if(level>=5&&level<=8){
-            enemy=20;
-            seconds=20;
-            strongenemy=2;
-        }else if(level>=9&&level<=12){
-            enemy=20;
-            seconds=25;
-            strongenemy=4;
-            longrangeenemy=2;
-        }else if(level>=13&&level<=14){
-            enemy=0;
-            seconds=40;
-            strongenemy=0;
-            longrangeenemy=20;
-        }else if(level==15){
-            enemy=0;
-            seconds=40;
-            strongenemy=30;
-            longrangeenemy=0;
-        }
     }
 
     public int getLevel() {

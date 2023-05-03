@@ -3,6 +3,10 @@ package com.example.viktor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
+import com.google.android.material.datepicker.RangeDateSelector;
+
+import java.util.Random;
+
 public class MyEntity {
     int hp;
     int damage;
@@ -14,6 +18,7 @@ public class MyEntity {
     int entytyY=0;
     int firstentytyX=entytyX;
     int firstentytyY=entytyY;
+    int firstHp=hp;
 
     public MyEntity(int hp, int damage, Bitmap bitmap, int entytyX, int entytyY) {
         this.hp = hp;
@@ -87,9 +92,7 @@ public class MyEntity {
         this.entytyY = entytyY;
     }
 
-    public int getFirstentytyX() {
-        return firstentytyX;
-    }
+    public int getFirstentytyX() {return firstentytyX;}
 
     public void setFirstentytyX(int firstentytyX) {
         this.firstentytyX = firstentytyX;
@@ -102,4 +105,8 @@ public class MyEntity {
     public void setFirstentytyY(int firstentytyY) {
         this.firstentytyY = firstentytyY;
     }
+
+    public int getFirstHp() {return firstHp;}
+
+    public void setFirstHp(int firstHp) {this.firstHp = firstHp;}
 }
