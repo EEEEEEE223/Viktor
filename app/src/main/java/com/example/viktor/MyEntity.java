@@ -2,6 +2,8 @@ package com.example.viktor;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
 
 import com.google.android.material.datepicker.RangeDateSelector;
 
@@ -19,6 +21,8 @@ public class MyEntity {
     int firstentytyX=entytyX;
     int firstentytyY=entytyY;
     int firstHp=hp;
+    private Rect destination5;
+    private Rect src5;
 
     public MyEntity(int hp, int damage, Bitmap bitmap, int entytyX, int entytyY) {
         this.hp = hp;
@@ -74,6 +78,11 @@ public class MyEntity {
 
     public void setCanvas(Canvas canvas) {
         this.canvas = canvas;
+    }
+    public  void draw(){
+        src5 = new Rect(0, 0, this.getBitmap().getWidth(), this.getBitmap().getHeight());
+        destination5 = new Rect(this.getEntytyX(), this.getEntytyY(), this.getEntytyX() + 80, this.getEntytyY() + 80);
+        this.canvas.drawBitmap(this.bitmap,src5,destination5,new Paint());
     }
 
     public int getEntytyX() {

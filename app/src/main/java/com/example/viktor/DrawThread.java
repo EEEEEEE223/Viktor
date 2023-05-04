@@ -70,7 +70,7 @@ public class DrawThread extends Thread {
         down = new MyButton(200, 500, but);
         right = new MyButton(400, 350, but);
         left = new MyButton(0, 350, but);
-        enemy = new MyEntity(100, 3, angsmile, 0,0);//randomNumber.generate(-100,1000) , randomNumber.generate(-500,-2500));
+        enemy = new MyEntity(100, 3, angsmile, generate(-100,1000) , generate(-500,-2500));
         myLevel=new MyLevel(1);
         while (running) {
             Canvas canvas = surfaceHolder.lockCanvas();
@@ -92,13 +92,11 @@ public class DrawThread extends Thread {
                     Rect src2 = new Rect(0, down.getBitmap().getHeight() / 2, down.getBitmap().getWidth() / 2, down.getBitmap().getHeight());
                     Rect src3 = new Rect(0, 0, left.getBitmap().getWidth() / 2, left.getBitmap().getHeight() / 2);
                     Rect src4 = new Rect(right.getBitmap().getWidth() / 2, 0, right.getBitmap().getWidth(), right.getBitmap().getHeight() / 2);
-                    Rect src5 = new Rect(0, 0, enemy.getBitmap().getWidth(), enemy.getBitmap().getHeight());
                     Rect srcreset=new Rect(0,0,reset.getWidth(),reset.getHeight());
                     Rect destination = new Rect(up.getX(), up.getY2(), up.getX() + 200, up.getY2() + 200);
                     Rect destination2 = new Rect(down.getX(), h - 200, down.getX() + 200, h);
                     Rect destination3 = new Rect(left.getX(), left.getY2(), left.getX() + 200, left.getY2() + 200);
                     Rect destination4 = new Rect(right.getX(), right.getY2(), right.getX() + 200, right.getY2() + 200);
-                    Rect destination5 = new Rect(enemy.getEntytyX(), enemy.getEntytyY(), enemy.getEntytyX() + 80, enemy.getEntytyY() + 80);
                     Rect destinationres=new Rect(w /2-100, h /2-300, w /2+100, h /2-100);
                     if(myLevel.getLevel()<=4){
                         myLevel.setEnemy(4);
@@ -111,8 +109,9 @@ public class DrawThread extends Thread {
                         myLevel.setStrongenemy(10);
                     }
                     if(start) {
-                        if(myLevel.getEnemy()>=0){
-                            canvas.drawBitmap(enemy.getBitmap(), src5, destination5, new Paint());
+                        while (myLevel.getEnemy()>=0){
+
+                            enemy.draw();
                             myLevel.setEnemy(myLevel.getEnemy()-1);
                         }
                         canvas.drawRect(0, 0, w, h, backgroundPaint);
