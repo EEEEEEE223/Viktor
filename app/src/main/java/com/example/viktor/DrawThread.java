@@ -81,8 +81,6 @@ public class DrawThread extends Thread {
             enemy.setCanvas(canvas);
             int h = canvas.getHeight();
             int w = canvas.getWidth();
-            System.out.println(generate(-100,1000));
-            System.out.println(generate(-500,-2500));
             if (canvas != null) {
                 try {
                     Rect msrs = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
@@ -99,28 +97,33 @@ public class DrawThread extends Thread {
                     Rect destination4 = new Rect(right.getX(), right.getY2(), right.getX() + 200, right.getY2() + 200);
                     Rect destinationres=new Rect(w /2-100, h /2-300, w /2+100, h /2-100);
                     if(myLevel.getLevel()<=4){
+                        myLevel.setSeconds(15*3000);
                         myLevel.setEnemy(4);
                     }else if(myLevel.getLevel()>=5&&myLevel.getLevel()<=8){
+                        myLevel.setSeconds(20*3000);
                         myLevel.setEnemy(10);
                         myLevel.setLongrangeenemy(3);
                     }else if(myLevel.getLevel()>=9&&myLevel.getLevel()<=12){
+                        myLevel.setSeconds(25*3000);
                         myLevel.setEnemy(0);
                         myLevel.setLongrangeenemy(7);
                         myLevel.setStrongenemy(10);
                     }
+                    myLevel.setSeconds(myLevel.getSeconds()-1);
                     if(start) {
+                        canvas.drawRect(0, 0, w, h, backgroundPaint);
                         while (myLevel.getEnemy()>=0){
-
                             enemy.draw();
                             myLevel.setEnemy(myLevel.getEnemy()-1);
                         }
-                        canvas.drawRect(0, 0, w, h, backgroundPaint);
                         canvas.drawBitmap(up.getBitmap(), src, destination, new Paint());
                         canvas.drawBitmap(down.getBitmap(), src2, destination2, new Paint());
                         canvas.drawBitmap(left.getBitmap(), src3, destination3, new Paint());
                         canvas.drawBitmap(right.getBitmap(), src4, destination4, new Paint());
                         canvas.drawBitmap(bitmap, msrs, mdestinatoin, new Paint());
                         canvas.drawText("XP-" + smileXP, up.getX2() - 200, up.getY2() + 200, dest);
+                        canvas.drawText("Time-" + myLevel.getSeconds()/3000, up.getX2() - 200, up.getY2() + 400, dest);
+                        System.out.println(myLevel.getSeconds());
                     }
                     if(die){
                         canvas.drawBitmap(reset,srcreset,destinationres,new Paint());
@@ -140,7 +143,7 @@ public class DrawThread extends Thread {
                         if (smileY <= 0) smileY = 0;
                         smileY -= 10;
                     }
-                    if (!mdestinatoin.contains(destination5)) {
+                    if (!mdestinatoin.contains(enemy.getDestination5())) {
                         if (enemy.getEntytyX() < smileX) {
                             enemy.setEntytyX(enemy.getEntytyX() + 2);
                         }
@@ -153,7 +156,7 @@ public class DrawThread extends Thread {
                         if (enemy.getEntytyY() > smileY) {
                             enemy.setEntytyY(enemy.getEntytyY() - 3);
                         }
-                        if (destination5.intersect(mdestinatoin)) {
+                        if (enemy.getDestination5().intersect(mdestinatoin)) {
                             smileXP--;
                         }
                         if (smileXP<=0){
@@ -170,7 +173,7 @@ public class DrawThread extends Thread {
                             enemy.setHp(enemy.getFirstHp());
                             start=true;
                         }
-                        if (distdestinatoin.contains(destination5)) {
+                        if (distdestinatoin.contains(enemy.getDestination5())) {
                             enemy.setHp(enemy.getHp() - 1);
                         }
                     }

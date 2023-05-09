@@ -2,6 +2,7 @@ package com.example.viktor;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
@@ -118,4 +119,20 @@ public class MyEntity {
     public int getFirstHp() {return firstHp;}
 
     public void setFirstHp(int firstHp) {this.firstHp = firstHp;}
+
+    public Rect getDestination5() {
+        return destination5;
+    }
+
+    public void setDestination5(Rect destination5) {
+        this.destination5 = destination5;
+    }
+
+    public Rect getSrc5() {
+        return src5;
+    }
+
+    public void setSrc5(Rect src5) {
+        this.src5 = src5;
+    }
 }

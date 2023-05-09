@@ -2,8 +2,7 @@ package com.example.viktor;
 
 public class MyLevel {
     int level;
-    int seconds=15;
-    int time=seconds;
+    int seconds;
     int enemy;
     int strongenemy;
     int longrangeenemy;
@@ -30,12 +29,12 @@ public class MyLevel {
         this.level = level;
     }
 
-    public int getTime() {
-        return time;
+    public int getSeconds() {
+        return seconds;
     }
 
-    public void setTime(int time) {
-        this.time = time;
+    public void setSeconds(int seconds) {
+        this.seconds = seconds;
     }
 
     public int getEnemy() {
