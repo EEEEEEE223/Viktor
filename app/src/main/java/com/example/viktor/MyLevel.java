@@ -1,9 +1,17 @@
 package com.example.viktor;
 
+import static com.example.viktor.DrawThread.generate;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import java.util.ArrayList;
+
 public class MyLevel {
     int level;
     int seconds;
     int enemy;
+    ArrayList<MyEntity> enemys=new ArrayList<>();
     int strongenemy;
     int longrangeenemy;
     //CountDownTimer upCountDownTimer=new CountDownTimer(seconds,1000) {
@@ -41,7 +49,12 @@ public class MyLevel {
         return enemy;
     }
 
-    public void setEnemy(int enemy) {
+    public void setEnemy(int enemy, Bitmap angsmile) {
+        enemys.clear();
+
+        for (int i = 0; i < enemy; i++) {
+            enemys.add(new MyEntity(100, 3, angsmile, generate(-100,1000) , generate(-500,-2500)));
+        }
         this.enemy = enemy;
     }
 

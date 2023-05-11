@@ -80,6 +80,21 @@ public class MyEntity {
     public void setCanvas(Canvas canvas) {
         this.canvas = canvas;
     }
+    public Rect getDestination5() {
+        return destination5;
+    }
+
+    public void setDestination5(Rect destination5) {
+        this.destination5 = destination5;
+    }
+
+    public Rect getSrc5() {
+        return src5;
+    }
+
+    public void setSrc5(Rect src5) {
+        this.src5 = src5;
+    }
     public  void draw(){
         src5 = new Rect(0, 0, this.getBitmap().getWidth(), this.getBitmap().getHeight());
         destination5 = new Rect(this.getEntytyX(), this.getEntytyY(), this.getEntytyX() + 80, this.getEntytyY() + 80);
@@ -120,19 +135,4 @@ public class MyEntity {
 
     public void setFirstHp(int firstHp) {this.firstHp = firstHp;}
 
-    public Rect getDestination5() {
-        return destination5;
-    }
-
-    public void setDestination5(Rect destination5) {
-        this.destination5 = destination5;
-    }
-
-    public Rect getSrc5() {
-        return src5;
-    }
-
-    public void setSrc5(Rect src5) {
-        this.src5 = src5;
-    }
 }

@@ -25,12 +25,14 @@ public class DrawThread extends Thread {
     private MyButton down;
     private MyButton left;
     private MyButton right;
-    private MyEntity enemy;
     private int towardPointX;
     private int towardPointY;
     private MyLevel myLevel;
     private boolean start =true;
     private boolean die =false;
+    int smileXP= 12;
+    int smileX = 0;
+    int smileY = 0;
     {
         backgroundPaint.setColor(Color.WHITE);
         backgroundPaint.setStyle(Paint.Style.FILL);
@@ -57,20 +59,16 @@ public class DrawThread extends Thread {
         towardPointX = x;
         towardPointY = y;
     }
-    public int generate(int min , int max){
+    public  static int generate(int min , int max){
         return (int)Math.floor(Math.random() * (max - min - 1 ) + min);
     }
 
     @Override
     public void run() {
-        int smileXP= 12;
-        int smileX = 0;
-        int smileY = 0;
         up = new MyButton(200, 500, but);
         down = new MyButton(200, 500, but);
         right = new MyButton(400, 350, but);
         left = new MyButton(0, 350, but);
-        enemy = new MyEntity(100, 3, angsmile, generate(-100,1000) , generate(-500,-2500));
         myLevel=new MyLevel(1);
         while (running) {
             Canvas canvas = surfaceHolder.lockCanvas();
@@ -78,7 +76,6 @@ public class DrawThread extends Thread {
             down.setCanvas(canvas);
             right.setCanvas(canvas);
             left.setCanvas(canvas);
-            enemy.setCanvas(canvas);
             int h = canvas.getHeight();
             int w = canvas.getWidth();
             if (canvas != null) {
@@ -98,23 +95,23 @@ public class DrawThread extends Thread {
                     Rect destinationres=new Rect(w /2-100, h /2-300, w /2+100, h /2-100);
                     if(myLevel.getLevel()<=4){
                         myLevel.setSeconds(15*3000);
-                        myLevel.setEnemy(4);
+                        myLevel.setEnemy(4,angsmile);
                     }else if(myLevel.getLevel()>=5&&myLevel.getLevel()<=8){
                         myLevel.setSeconds(20*3000);
-                        myLevel.setEnemy(10);
+                        myLevel.setEnemy(10,angsmile);
                         myLevel.setLongrangeenemy(3);
                     }else if(myLevel.getLevel()>=9&&myLevel.getLevel()<=12){
                         myLevel.setSeconds(25*3000);
-                        myLevel.setEnemy(0);
+                        myLevel.setEnemy(0,angsmile);
                         myLevel.setLongrangeenemy(7);
                         myLevel.setStrongenemy(10);
                     }
                     myLevel.setSeconds(myLevel.getSeconds()-1);
                     if(start) {
                         canvas.drawRect(0, 0, w, h, backgroundPaint);
-                        while (myLevel.getEnemy()>=0){
+                        for (MyEntity enemy:myLevel.enemys) {
+                            enemy.setCanvas(canvas);
                             enemy.draw();
-                            myLevel.setEnemy(myLevel.getEnemy()-1);
                         }
                         canvas.drawBitmap(up.getBitmap(), src, destination, new Paint());
                         canvas.drawBitmap(down.getBitmap(), src2, destination2, new Paint());
@@ -143,46 +140,54 @@ public class DrawThread extends Thread {
                         if (smileY <= 0) smileY = 0;
                         smileY -= 10;
                     }
-                    if (!mdestinatoin.contains(enemy.getDestination5())) {
-                        if (enemy.getEntytyX() < smileX) {
-                            enemy.setEntytyX(enemy.getEntytyX() + 2);
-                        }
-                        if (enemy.getEntytyX() > smileX) {
-                            enemy.setEntytyX(enemy.getEntytyX() - 2);
-                        }
-                        if (enemy.getEntytyY() < smileY) {
-                            enemy.setEntytyY(enemy.getEntytyY() + 3);
-                        }
-                        if (enemy.getEntytyY() > smileY) {
-                            enemy.setEntytyY(enemy.getEntytyY() - 3);
-                        }
-                        if (enemy.getDestination5().intersect(mdestinatoin)) {
-                            smileXP--;
-                        }
-                        if (smileXP<=0){
-                            start=false;
-                            die=true;
-                        }
-                        if(destinationres.contains(towardPointX,towardPointY)){
-                            die=false;
-                            smileX=0;
-                            smileY=0;
-                            smileXP=12;
-                            enemy.setEntytyY(enemy.getFirstentytyY());
-                            enemy.setEntytyX(enemy.getFirstentytyX());
-                            enemy.setHp(enemy.getFirstHp());
-                            start=true;
-                        }
-                        if (distdestinatoin.contains(enemy.getDestination5())) {
-                            enemy.setHp(enemy.getHp() - 1);
-                        }
-                    }
-                    if(enemy.getHp()<=0){
-                        enemy.setEntytyY(-10000);
-                    }
+                    enemymoves(canvas, mdestinatoin, distdestinatoin, destinationres);
                 } finally {
                     surfaceHolder.unlockCanvasAndPost(canvas);
                 }
+            }
+        }
+    }
+
+    private void enemymoves(Canvas canvas, Rect mdestinatoin, Rect distdestinatoin, Rect destinationres) {
+        for (MyEntity enemy:myLevel.enemys) {
+            enemy.setCanvas(canvas);
+            enemy.draw();
+            if (!mdestinatoin.contains(enemy.getDestination5())) {
+                if (enemy.getEntytyX() < smileX) {
+                    enemy.setEntytyX(enemy.getEntytyX() + 20);
+                }
+                if (enemy.getEntytyX() > smileX) {
+                    enemy.setEntytyX(enemy.getEntytyX() - 20);
+                }
+                if (enemy.getEntytyY() < smileY) {
+                    enemy.setEntytyY(enemy.getEntytyY() + 30);
+                }
+                if (enemy.getEntytyY() > smileY) {
+                    enemy.setEntytyY(enemy.getEntytyY() - 30);
+                }
+                if (enemy.getDestination5().intersect(mdestinatoin)) {
+                    smileXP--;
+                }
+                if (smileXP <= 0) {
+                    start = false;
+                    die = true;
+                }
+                if (destinationres.contains(towardPointX, towardPointY)) {
+                    die = false;
+                    smileX = 0;
+                    smileY = 0;
+                    smileXP = 12;
+                    enemy.setEntytyY(enemy.getFirstentytyY());
+                    enemy.setEntytyX(enemy.getFirstentytyX());
+                    enemy.setHp(enemy.getFirstHp());
+                    start = true;
+                }
+                if (distdestinatoin.contains(enemy.getDestination5())) {
+                    enemy.setHp(enemy.getHp() - 1);
+                }
+            }
+            if (enemy.getHp() <= 0) {
+                enemy.setEntytyY(-10000);
             }
         }
     }
