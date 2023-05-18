@@ -2,13 +2,8 @@ package com.example.viktor;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-
-import com.google.android.material.datepicker.RangeDateSelector;
-
-import java.util.Random;
 
 public class MyEntity {
     int hp;
@@ -22,15 +17,33 @@ public class MyEntity {
     int firstentytyX=entytyX;
     int firstentytyY=entytyY;
     int firstHp=hp;
-    private Rect destination5;
-    private Rect src5;
+    private Rect destination;
+    private Rect src;
 
-    public MyEntity(int hp, int damage, Bitmap bitmap, int entytyX, int entytyY) {
+    public Rect getDestination() {
+        return destination;
+    }
+
+    public void setDestination(Rect destination) {
+        this.destination = destination;
+    }
+
+    public Rect getSrc() {
+        return src;
+    }
+
+    public void setSrc(Rect src) {
+        this.src = src;
+    }
+
+    public  MyEntity(int hp, int damage, Bitmap bitmap, int entytyX, int entytyY) {
         this.hp = hp;
         this.damage = damage;
         this.bitmap = bitmap;
         this.entytyX = entytyX;
         this.entytyY = entytyY;
+        destination =new Rect(entytyX,entytyY,entytyX+80,entytyY+80);
+        src =new Rect(0,0,bitmap.getWidth(),bitmap.getHeight());
     }
 
     public int getHp() {
@@ -80,25 +93,26 @@ public class MyEntity {
     public void setCanvas(Canvas canvas) {
         this.canvas = canvas;
     }
-    public Rect getDestination5() {
-        return destination5;
-    }
+    //public Rect getDestination5() {
+    //   return destination5;
+    //}
 
-    public void setDestination5(Rect destination5) {
-        this.destination5 = destination5;
-    }
+    ///public void setDestination5(Rect destination5) {
+     //   this.destination5 = destination5;
+    //}
 
-    public Rect getSrc5() {
-        return src5;
-    }
+    //public Rect getSrc5() {
+     //  return src5;
+    //}
 
-    public void setSrc5(Rect src5) {
-        this.src5 = src5;
-    }
-    public  void draw(){
-        src5 = new Rect(0, 0, this.getBitmap().getWidth(), this.getBitmap().getHeight());
-        destination5 = new Rect(this.getEntytyX(), this.getEntytyY(), this.getEntytyX() + 80, this.getEntytyY() + 80);
-        this.canvas.drawBitmap(this.bitmap,src5,destination5,new Paint());
+    //public void setSrc5(Rect src5) {
+   //     this.src5 = src5;
+    //}
+    public  void draw(Canvas canvas){
+        setCanvas(canvas);
+       src = new Rect(0, 0, this.getBitmap().getWidth(), this.getBitmap().getHeight());
+        destination = new Rect(this.getEntytyX(), this.getEntytyY(), this.getEntytyX() + 80, this.getEntytyY() + 80);
+        this.canvas.drawBitmap(this.bitmap,src,destination,new Paint());
     }
 
     public int getEntytyX() {
