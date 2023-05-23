@@ -30,9 +30,10 @@ public class DrawThread extends Thread {
     private MyLevel myLevel;
     private boolean start =true;
     private boolean die =false;
-    int smileXP= 12;
-    int smileX = 0;
-    int smileY = 0;
+    private int l=1;
+    private int smileXP= 12;
+    private int smileX = 0;
+    private int smileY = 0;
     {
         backgroundPaint.setColor(Color.WHITE);
         backgroundPaint.setStyle(Paint.Style.FILL);
@@ -69,7 +70,7 @@ public class DrawThread extends Thread {
         down = new MyButton(200, 500, but);
         right = new MyButton(400, 350, but);
         left = new MyButton(0, 350, but);
-        myLevel=new MyLevel(1,angsmile);
+        myLevel=new MyLevel(l,angsmile);
         while (running) {
             Canvas canvas = surfaceHolder.lockCanvas();
             up.setCanvas(canvas);
@@ -79,7 +80,7 @@ public class DrawThread extends Thread {
 
             if(myLevel.getCanvas()==null){
                 myLevel.setCanvas(canvas);
-                myLevel.setLevel(1);
+                myLevel.setLevel(l);
             }
             myLevel.setCanvas(canvas);
             int h = canvas.getHeight();
@@ -92,26 +93,20 @@ public class DrawThread extends Thread {
                 Rect src2 = new Rect(0, down.getBitmap().getHeight() / 2, down.getBitmap().getWidth() / 2, down.getBitmap().getHeight());
                 Rect src3 = new Rect(0, 0, left.getBitmap().getWidth() / 2, left.getBitmap().getHeight() / 2);
                 Rect src4 = new Rect(right.getBitmap().getWidth() / 2, 0, right.getBitmap().getWidth(), right.getBitmap().getHeight() / 2);
-                Rect srcreset=new Rect(0,0,reset.getWidth(),reset.getHeight());
                 Rect destination = new Rect(up.getX(), up.getY2(), up.getX() + 200, up.getY2() + 200);
                 Rect destination2 = new Rect(down.getX(), h - 200, down.getX() + 200, h);
                 Rect destination3 = new Rect(left.getX(), left.getY2(), left.getX() + 200, left.getY2() + 200);
                 Rect destination4 = new Rect(right.getX(), right.getY2(), right.getX() + 200, right.getY2() + 200);
-                Rect destinationres=new Rect(w /2-100, h /2-300, w /2+100, h /2-100);
-                if(start) {
-                    canvas.drawRect(0, 0, w, h, backgroundPaint);
-                    canvas.drawBitmap(up.getBitmap(), src, destination, new Paint());
-                    canvas.drawBitmap(down.getBitmap(), src2, destination2, new Paint());
-                    canvas.drawBitmap(left.getBitmap(), src3, destination3, new Paint());
-                    canvas.drawBitmap(right.getBitmap(), src4, destination4, new Paint());
-                    canvas.drawBitmap(bitmap, msrs, mdestinatoin, new Paint());
-                    canvas.drawText("XP-" + smileXP, up.getX2() - 200, up.getY2() + 200, dest);
-                    canvas.drawText("Time-" + myLevel.getSeconds()/3000, up.getX2() - 200, up.getY2() + 400, dest);
-                }
                 if(die){
-                    canvas.drawBitmap(reset,srcreset,destinationres,new Paint());
                     canvas.drawRect(0, 0, w, h, new Paint());
                     canvas.drawText("YOU DIE", (float) w / 2 - 150, (float) h / 2, endpaint);
+                }
+                if(start) {
+                    spawninterface(canvas,w,h,src,src2,src3,src4,destination,destination2,destination3,destination4);
+                    spawnsmile(canvas,mdestinatoin,msrs);
+                    enemymoves(canvas, mdestinatoin, distdestinatoin);
+                    System.out.println(myLevel.getEnemy());
+
                 }
                 if (destination4.contains(towardPointX, towardPointY)) {
                     if (smileX + 200 <= w)
@@ -126,16 +121,20 @@ public class DrawThread extends Thread {
                     if (smileY <= 0) smileY = 0;
                     smileY -= 10;
                 }
-                enemymoves(canvas, mdestinatoin, distdestinatoin, destinationres);
+                if(myLevel.getDeadEnemy()== myLevel.getEnemy()){
+                    myLevel.setLevel(l+1);
+                }
             } finally {
                 surfaceHolder.unlockCanvasAndPost(canvas);
             }
         }
     }
+    private void enemymoves(Canvas canvas, Rect mdestinatoin, Rect distdestinatoin) {
 
-    private void enemymoves(Canvas canvas, Rect mdestinatoin, Rect distdestinatoin, Rect destinationres) {
         for (MyEntity enemy:myLevel.enemys) {
-            //enemy.setCanvas(canvas);
+            if(enemy.isDelete()){
+                continue;
+            }
             enemy.draw(canvas);
             if (!mdestinatoin.contains(enemy.getDestination())) {
                 if (enemy.getEntytyX() < smileX) {
@@ -157,23 +156,27 @@ public class DrawThread extends Thread {
                     start = false;
                     die = true;
                 }
-                if (destinationres.contains(towardPointX, towardPointY)) {
-                    die = false;
-                    smileX = 0;
-                    smileY = 0;
-                    smileXP = 12;
-                    enemy.setEntytyY(enemy.getFirstentytyY());
-                    enemy.setEntytyX(enemy.getFirstentytyX());
-                    enemy.setHp(enemy.getFirstHp());
-                    start = true;
-                }
                 if (distdestinatoin.contains(enemy.getDestination())) {
-                    enemy.setHp( - 1);
+                    enemy.setHp( enemy.getHp()-1);
                 }
-            }
-            if (enemy.getHp()<=0) {
-                enemy.setEntytyY(-10000);
+                if (enemy.getHp()<=0&&!enemy.isDelete()) {
+                    enemy.setDelete(true);
+                }
             }
         }
+    }
+
+    private void spawninterface(Canvas canvas,int w,int h,Rect src,Rect src2,Rect src3,
+                                Rect src4,Rect destination,Rect destination2,Rect destination3,
+                                Rect destination4){
+        canvas.drawRect(0, 0, w, h, backgroundPaint);
+        canvas.drawBitmap(up.getBitmap(), src, destination, new Paint());
+        canvas.drawBitmap(down.getBitmap(), src2, destination2, new Paint());
+        canvas.drawBitmap(left.getBitmap(), src3, destination3, new Paint());
+        canvas.drawBitmap(right.getBitmap(), src4, destination4, new Paint());
+        canvas.drawText("XP-" + smileXP, up.getX2() - 200, up.getY2() + 200, dest);
+    }
+    private void spawnsmile(Canvas canvas,Rect mdestinatoin,Rect msrs){
+        canvas.drawBitmap(bitmap, msrs, mdestinatoin, new Paint());
     }
 }

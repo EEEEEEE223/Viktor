@@ -37,7 +37,7 @@ public class MyLevel {
         for (int i = 0; i < enemy; i++) {
             int x=generate(-100,1000);
             int y = generate(-500, -2500);
-            MyEntity myEntity=new MyEntity(100, 3, angsmile, x , y);
+            MyEntity myEntity=new MyEntity(25, 3, angsmile, x , y);
             enemys.add( myEntity);
             myEntity.draw(canvas);
 
@@ -47,22 +47,28 @@ public class MyLevel {
     public void setLevel(int level) {
         
         this.level = level;
-        if(level<=4){
-            setSeconds(15*3000);
-            setEnemy(40,bitmap);
-
-        }else if(level>=5&&level<=8){
-            setSeconds(20*3000);
+        if(level==1) {
+            setEnemy(4, bitmap);
+        }else if(level==2){
+            setEnemy(6,bitmap);
+        }else if(level==3){
+            setEnemy(8,bitmap);
+        }else if(level==4){
             setEnemy(10,bitmap);
+        }else if(level>=5&&level<=6){
+            setEnemy(15,bitmap);
             setLongrangeenemy(3);
+        }else if(level==7){
+            setEnemy(20,bitmap);
+        }else if(level==8&&level==9){
+            setEnemy(14,bitmap);
+            setLongrangeenemy(10);
         }else if(level>=9&&level<=12){
-            setSeconds(25*3000);
-            setEnemy(1,bitmap);
-            setLongrangeenemy(7);
+            setEnemy(14,bitmap);
+            setLongrangeenemy(20);
             setStrongenemy(10);
         }
     }
-
     public int getSeconds() {
         return seconds;
     }
@@ -98,4 +104,15 @@ public class MyLevel {
     public void setCanvas(Canvas canvas) {
         this.canvas = canvas;
     }
+
+    public int getDeadEnemy() {
+        int count=0;
+        for (MyEntity entity : enemys){
+            if (entity.isDelete()==true){
+                count+=1;
+            }
+        }
+        return count;
+    }
+
 }
