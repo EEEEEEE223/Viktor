@@ -30,7 +30,6 @@ public class DrawThread extends Thread {
     private MyLevel myLevel;
     private boolean start =true;
     private boolean die =false;
-    private int l=1;
     private int smileXP= 12;
     private int smileX = 0;
     private int smileY = 0;
@@ -70,7 +69,7 @@ public class DrawThread extends Thread {
         down = new MyButton(200, 500, but);
         right = new MyButton(400, 350, but);
         left = new MyButton(0, 350, but);
-        myLevel=new MyLevel(l,angsmile);
+        myLevel=new MyLevel(1,angsmile);
         while (running) {
             Canvas canvas = surfaceHolder.lockCanvas();
             up.setCanvas(canvas);
@@ -80,7 +79,7 @@ public class DrawThread extends Thread {
 
             if(myLevel.getCanvas()==null){
                 myLevel.setCanvas(canvas);
-                myLevel.setLevel(l);
+                myLevel.setLevel(myLevel.getLevel()+1);
             }
             myLevel.setCanvas(canvas);
             int h = canvas.getHeight();
@@ -122,7 +121,7 @@ public class DrawThread extends Thread {
                     smileY -= 10;
                 }
                 if(myLevel.getDeadEnemy()== myLevel.getEnemy()){
-                    myLevel.setLevel(l+1);
+                    myLevel.setLevel(myLevel.getLevel()+1);
                 }
             } finally {
                 surfaceHolder.unlockCanvasAndPost(canvas);

@@ -47,20 +47,20 @@ public class MyLevel {
     public void setLevel(int level) {
         
         this.level = level;
-        if(level==1) {
+        if(level==0) {
             setEnemy(4, bitmap);
-        }else if(level==2){
+        }else if(level==1){
             setEnemy(6,bitmap);
-        }else if(level==3){
+        }else if(level==2){
             setEnemy(8,bitmap);
-        }else if(level==4){
+        }else if(level==3){
             setEnemy(10,bitmap);
-        }else if(level>=5&&level<=6){
+        }else if(level>=4&&level<=5){
             setEnemy(15,bitmap);
             setLongrangeenemy(3);
-        }else if(level==7){
+        }else if(level==6){
             setEnemy(20,bitmap);
-        }else if(level==8&&level==9){
+        }else if(level==7&&level==8){
             setEnemy(14,bitmap);
             setLongrangeenemy(10);
         }else if(level>=9&&level<=12){
