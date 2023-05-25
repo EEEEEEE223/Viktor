@@ -38,9 +38,7 @@ public class MyLevel {
         if(canvas ==null){
             return;
         }
-        enemys.clear();
-        enemys1.clear();
-
+        clear();
         for (int i = 0; i < enemy; i++) {
             int x=generate(-100,1000);
             int y = generate(-500, -2500);
@@ -156,5 +154,10 @@ public class MyLevel {
             }
         }
         return count;
+    }
+    public void  clear(){
+        enemys.clear();
+        enemys1.clear();
+        enemys2.clear();
     }
 }

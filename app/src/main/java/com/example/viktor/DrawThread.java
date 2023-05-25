@@ -100,11 +100,18 @@ public class DrawThread extends Thread {
                 Rect destination2 = new Rect(down.getX(), h - 200, down.getX() + 200, h);
                 Rect destination3 = new Rect(left.getX(), left.getY2(), left.getX() + 200, left.getY2() + 200);
                 Rect destination4 = new Rect(right.getX(), right.getY2(), right.getX() + 200, right.getY2() + 200);
+                Rect reset=new Rect(w / 2 - 150 , h / 2,w / 2 + 350,h/2+500);
                 if(die){
                     canvas.drawRect(0, 0, w, h, new Paint());
                     canvas.drawText("YOU DIE", (float) w / 2 - 150, (float) h / 2, endpaint);
-                }
-                if(start) {
+                    if (reset.contains(towardPointX,towardPointY)){
+                        myLevel.clear();
+                        smileX=25;
+                        myLevel.setLevel(1);
+                        die=false;
+                        start=true;
+                    }
+                }else if(start) {
                     spawninterface(canvas,w,h,src,src2,src3,src4,destination,destination2,destination3,destination4);
                     spawnsmile(canvas,mdestinatoin,msrs);
                     enemymoves(canvas, mdestinatoin, distdestinatoin);
