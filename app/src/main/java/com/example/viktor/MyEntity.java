@@ -12,6 +12,7 @@ public class MyEntity {
     int radY;
     private Bitmap bitmap;
     private Canvas canvas;
+    int x;
     int entytyX=0;
     int entytyY=0;
     int firstentytyX=entytyX;
@@ -20,6 +21,7 @@ public class MyEntity {
     private Rect destination;
     private Rect src;
     private boolean delete=false;
+
 
     public Rect getDestination() {
         return destination;
@@ -37,7 +39,7 @@ public class MyEntity {
         this.src = src;
     }
 
-    public  MyEntity(int hp, int damage, Bitmap bitmap, int entytyX, int entytyY) {
+    public  MyEntity(int hp, int damage, Bitmap bitmap, int entytyX, int entytyY,int x) {
         this.hp = hp;
         this.damage = damage;
         this.bitmap = bitmap;
@@ -45,6 +47,7 @@ public class MyEntity {
         this.entytyY = entytyY;
         destination =new Rect(entytyX,entytyY,entytyX+80,entytyY+80);
         src =new Rect(0,0,bitmap.getWidth(),bitmap.getHeight());
+        this.x=x;
     }
 
     public int getHp() {
@@ -109,7 +112,7 @@ public class MyEntity {
         if (!delete) {
             setCanvas(canvas);
             src = new Rect(0, 0, this.getBitmap().getWidth(), this.getBitmap().getHeight());
-            destination = new Rect(this.getEntytyX(), this.getEntytyY(), this.getEntytyX() + 80, this.getEntytyY() + 80);
+            destination = new Rect(this.getEntytyX(), this.getEntytyY(), this.getEntytyX() + x, this.getEntytyY() + x);
             this.canvas.drawBitmap(this.bitmap, src, destination, new Paint());
         }
     }

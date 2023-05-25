@@ -19,6 +19,8 @@ public class DrawThread extends Thread {
     private Paint dest=new Paint();
     private Bitmap bitmap;
     private Bitmap angsmile;
+    private Bitmap angsmile2;
+    private Bitmap angsmile3;
     private Bitmap but;
     private Bitmap reset;
     private MyButton up;
@@ -30,7 +32,7 @@ public class DrawThread extends Thread {
     private MyLevel myLevel;
     private boolean start =true;
     private boolean die =false;
-    private int smileXP= 12;
+    private int smileXP= 25;
     private int smileX = 0;
     private int smileY = 0;
     {
@@ -47,6 +49,8 @@ public class DrawThread extends Thread {
         this.surfaceHolder = surfaceHolder;
         but = BitmapFactory.decodeResource(context.getResources(), R.drawable.but);
         angsmile = BitmapFactory.decodeResource(context.getResources(), R.drawable.angsmile);
+        angsmile2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.angsmile2);
+        angsmile3 = BitmapFactory.decodeResource(context.getResources(), R.drawable.angsmile3);
         reset=BitmapFactory.decodeResource(context.getResources(), R.drawable.reset);
     }
 
@@ -69,7 +73,7 @@ public class DrawThread extends Thread {
         down = new MyButton(200, 500, but);
         right = new MyButton(400, 350, but);
         left = new MyButton(0, 350, but);
-        myLevel=new MyLevel(1,angsmile);
+        myLevel=new MyLevel(0,angsmile,angsmile2,angsmile3);
         while (running) {
             Canvas canvas = surfaceHolder.lockCanvas();
             up.setCanvas(canvas);
@@ -87,7 +91,7 @@ public class DrawThread extends Thread {
             try {
                 Rect msrs = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
                 Rect mdestinatoin = new Rect(smileX, smileY, smileX + 150, smileY + 150);
-                Rect distdestinatoin=new Rect(smileX-200,smileY-200,smileX+350,smileY+350);
+                Rect distdestinatoin=new Rect(smileX-300,smileY-300,smileX+650,smileY+650);
                 Rect src = new Rect(up.getBitmap().getWidth() / 2, up.getBitmap().getHeight() / 2, up.getBitmap().getWidth(), up.getBitmap().getHeight());
                 Rect src2 = new Rect(0, down.getBitmap().getHeight() / 2, down.getBitmap().getWidth() / 2, down.getBitmap().getHeight());
                 Rect src3 = new Rect(0, 0, left.getBitmap().getWidth() / 2, left.getBitmap().getHeight() / 2);
@@ -105,6 +109,7 @@ public class DrawThread extends Thread {
                     spawnsmile(canvas,mdestinatoin,msrs);
                     enemymoves(canvas, mdestinatoin, distdestinatoin);
                     System.out.println(myLevel.getEnemy());
+                    System.out.println(myLevel.getLevel());
 
                 }
                 if (destination4.contains(towardPointX, towardPointY)) {
@@ -120,7 +125,7 @@ public class DrawThread extends Thread {
                     if (smileY <= 0) smileY = 0;
                     smileY -= 10;
                 }
-                if(myLevel.getDeadEnemy()== myLevel.getEnemy()){
+                if(myLevel.getDeadEnemy()== myLevel.getEnemy() && myLevel.getDeadStrongEnemy()==myLevel.getStrongenemy()&&myLevel.getDeadBoss()==myLevel.getBoss()){
                     myLevel.setLevel(myLevel.getLevel()+1);
                 }
             } finally {
@@ -163,6 +168,72 @@ public class DrawThread extends Thread {
                 }
             }
         }
+        for (MyEntity enemy1:myLevel.enemys1) {
+            if(enemy1.isDelete()){
+                continue;
+            }
+            enemy1.draw(canvas);
+            if (!mdestinatoin.contains(enemy1.getDestination())) {
+                if (enemy1.getEntytyX() < smileX) {
+                    enemy1.setEntytyX(enemy1.getEntytyX() + 2);
+                }
+                if (enemy1.getEntytyX() > smileX) {
+                    enemy1.setEntytyX(enemy1.getEntytyX() - 2);
+                }
+                if (enemy1.getEntytyY() < smileY) {
+                    enemy1.setEntytyY(enemy1.getEntytyY() + 3);
+                }
+                if (enemy1.getEntytyY() > smileY) {
+                    enemy1.setEntytyY(enemy1.getEntytyY() - 3);
+                }
+                if (enemy1.getDestination().intersect(mdestinatoin)) {
+                    smileXP--;
+                }
+                if (smileXP <= 0) {
+                    start = false;
+                    die = true;
+                }
+                if (distdestinatoin.contains(enemy1.getDestination())) {
+                    enemy1.setHp( enemy1.getHp()-1);
+                }
+                if (enemy1.getHp()<=0&&!enemy1.isDelete()) {
+                    enemy1.setDelete(true);
+                }
+            }
+        }
+        for (MyEntity enemy2:myLevel.enemys2) {
+            if(enemy2.isDelete()){
+                continue;
+            }
+            enemy2.draw(canvas);
+            if (!mdestinatoin.contains(enemy2.getDestination())) {
+                if (enemy2.getEntytyX() < smileX) {
+                    enemy2.setEntytyX(enemy2.getEntytyX() + 2);
+                }
+                if (enemy2.getEntytyX() > smileX) {
+                    enemy2.setEntytyX(enemy2.getEntytyX() - 2);
+                }
+                if (enemy2.getEntytyY() < smileY) {
+                    enemy2.setEntytyY(enemy2.getEntytyY() + 3);
+                }
+                if (enemy2.getEntytyY() > smileY) {
+                    enemy2.setEntytyY(enemy2.getEntytyY() - 3);
+                }
+                if (enemy2.getDestination().intersect(mdestinatoin)) {
+                    smileXP--;
+                }
+                if (smileXP <= 0) {
+                    start = false;
+                    die = true;
+                }
+                if (distdestinatoin.contains(enemy2.getDestination())) {
+                    enemy2.setHp( enemy2.getHp()-1);
+                }
+                if (enemy2.getHp()<=0&&!enemy2.isDelete()) {
+                    enemy2.setDelete(true);
+                }
+            }
+        }
     }
 
     private void spawninterface(Canvas canvas,int w,int h,Rect src,Rect src2,Rect src3,
@@ -174,6 +245,7 @@ public class DrawThread extends Thread {
         canvas.drawBitmap(left.getBitmap(), src3, destination3, new Paint());
         canvas.drawBitmap(right.getBitmap(), src4, destination4, new Paint());
         canvas.drawText("XP-" + smileXP, up.getX2() - 200, up.getY2() + 200, dest);
+        canvas.drawText("LEVEL-"+myLevel.getLevel(),up.getX2()-200,up.getY2()+400,dest);
     }
     private void spawnsmile(Canvas canvas,Rect mdestinatoin,Rect msrs){
         canvas.drawBitmap(bitmap, msrs, mdestinatoin, new Paint());
