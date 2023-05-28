@@ -35,6 +35,7 @@ public class DrawThread extends Thread {
     private int smileXP= 25;
     private int smileX = 0;
     private int smileY = 0;
+    private int xpboss;
     {
         backgroundPaint.setColor(Color.WHITE);
         backgroundPaint.setStyle(Paint.Style.FILL);
@@ -239,6 +240,7 @@ public class DrawThread extends Thread {
                 if (enemy2.getHp()<=0&&!enemy2.isDelete()) {
                     enemy2.setDelete(true);
                 }
+                xpboss=enemy2.getHp();
             }
         }
     }
@@ -253,6 +255,9 @@ public class DrawThread extends Thread {
         canvas.drawBitmap(right.getBitmap(), src4, destination4, new Paint());
         canvas.drawText("XP-" + smileXP, up.getX2() - 200, up.getY2() + 200, dest);
         canvas.drawText("LEVEL-"+myLevel.getLevel(),up.getX2()-200,up.getY2()+400,dest);
+        if(myLevel.getLevel()==14){
+            canvas.drawText("XP BOSS:"+xpboss,canvas.getWidth()/2-100,0,dest);
+        }
     }
     private void spawnsmile(Canvas canvas,Rect mdestinatoin,Rect msrs){
         canvas.drawBitmap(bitmap, msrs, mdestinatoin, new Paint());
