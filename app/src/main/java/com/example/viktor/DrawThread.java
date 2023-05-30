@@ -105,13 +105,6 @@ public class DrawThread extends Thread {
                 if(die){
                     canvas.drawRect(0, 0, w, h, new Paint());
                     canvas.drawText("YOU DIE", (float) w / 2 - 150, (float) h / 2, endpaint);
-                    if (reset.contains(towardPointX,towardPointY)){
-                        myLevel.clear();
-                        smileX=25;
-                        myLevel.setLevel(1);
-                        die=false;
-                        start=true;
-                    }
                 }else if(start) {
                     spawninterface(canvas,w,h,src,src2,src3,src4,destination,destination2,destination3,destination4);
                     spawnsmile(canvas,mdestinatoin,msrs);
@@ -183,16 +176,16 @@ public class DrawThread extends Thread {
             enemy1.draw(canvas);
             if (!mdestinatoin.contains(enemy1.getDestination())) {
                 if (enemy1.getEntytyX() < smileX) {
-                    enemy1.setEntytyX(enemy1.getEntytyX() + 2);
+                    enemy1.setEntytyX(enemy1.getEntytyX() + 1);
                 }
                 if (enemy1.getEntytyX() > smileX) {
-                    enemy1.setEntytyX(enemy1.getEntytyX() - 2);
+                    enemy1.setEntytyX(enemy1.getEntytyX() - 1);
                 }
                 if (enemy1.getEntytyY() < smileY) {
-                    enemy1.setEntytyY(enemy1.getEntytyY() + 3);
+                    enemy1.setEntytyY(enemy1.getEntytyY() + 2);
                 }
                 if (enemy1.getEntytyY() > smileY) {
-                    enemy1.setEntytyY(enemy1.getEntytyY() - 3);
+                    enemy1.setEntytyY(enemy1.getEntytyY() - 2);
                 }
                 if (enemy1.getDestination().intersect(mdestinatoin)) {
                     smileXP--;
@@ -253,11 +246,8 @@ public class DrawThread extends Thread {
         canvas.drawBitmap(down.getBitmap(), src2, destination2, new Paint());
         canvas.drawBitmap(left.getBitmap(), src3, destination3, new Paint());
         canvas.drawBitmap(right.getBitmap(), src4, destination4, new Paint());
-        canvas.drawText("XP-" + smileXP, up.getX2() - 200, up.getY2() + 200, dest);
-        canvas.drawText("LEVEL-"+myLevel.getLevel(),up.getX2()-200,up.getY2()+400,dest);
-        if(myLevel.getLevel()==14){
-            canvas.drawText("XP BOSS:"+xpboss,canvas.getWidth()/2-100,0,dest);
-        }
+        canvas.drawText("XP:" + smileXP, up.getX2() - 200, up.getY2() + 200, dest);
+        canvas.drawText("LEVEL:"+myLevel.getLevel(),up.getX2()-200,up.getY2()+400,dest);
     }
     private void spawnsmile(Canvas canvas,Rect mdestinatoin,Rect msrs){
         canvas.drawBitmap(bitmap, msrs, mdestinatoin, new Paint());
